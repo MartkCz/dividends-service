@@ -1,11 +1,11 @@
 {
-    "name": "bulios/portfolio-service",
+    "name": "bulios/dividends-service",
     "require": {
         "php": ">=8.2"
     },
     "autoload": {
         "psr-4": {
-            "Api\\Portfolio\\": "src"
+            "Api\\Dividends\\": "src"
         }
     }
 }
