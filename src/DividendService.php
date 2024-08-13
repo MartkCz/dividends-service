@@ -28,9 +28,11 @@ final class DividendService
 	/**
 	 * @param Transaction[] $transactions
 	 */
-	public function requestPortfolio(array $transactions): ResponseInterface
+	public function requestPortfolio(array $transactions, int $year): ResponseInterface
 	{
-		return $this->httpClient->request('POST', $this->buildUrl(self::PortfolioLink), [
+		return $this->httpClient->request('POST', $this->buildUrl(self::PortfolioLink, [
+			'year' => $year,
+		]), [
 			'json' => $transactions,
 		]);
 	}
