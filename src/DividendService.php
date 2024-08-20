@@ -3,6 +3,7 @@
 namespace Api\Dividends;
 
 use App\Portfolio\Transaction;
+use DateTimeInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -28,12 +29,23 @@ final class DividendService
 	/**
 	 * @param Transaction[] $transactions
 	 */
-	public function requestPortfolio(array $transactions, int $year): ResponseInterface
+	public function requestPortfolio(
+		array $transactions,
+		int $year,
+		?DateTimeInterface $portfolioLastUpdate = null,
+	): ResponseInterface
 	{
+		$headers = [];
+
+		if ($portfolioLastUpdate) {
+			$headers['X-Last-Update'] = $portfolioLastUpdate->format('D, d M Y H:i:s \G\M\T');
+		}
+
 		return $this->httpClient->request('POST', $this->buildUrl(self::PortfolioLink, [
 			'year' => $year,
 		]), [
 			'json' => $transactions,
+			'headers' => $headers,
 		]);
 	}
 
