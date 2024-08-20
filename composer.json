@@ -1,0 +1,14 @@
+{
+    "name": "bulios/dividends-service",
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Api\\Dividends\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.11"
+    }
+}
