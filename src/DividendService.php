@@ -78,8 +78,8 @@ final class DividendService
 			$headers['If-Modified-Since'] = $ifModifiedSince->format('D, d M Y H:i:s \G\M\T');
 		}
 
-		if ($eTag) {
-			$headers['If-None-Match'] = $eTag;
+		if ($ifNoneMatch) {
+			$headers['If-None-Match'] = $ifNoneMatch;
 		}
 
 		return $headers;
