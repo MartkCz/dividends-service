@@ -34,13 +34,14 @@ final class DividendService
 		int $year,
 		?DateTimeInterface $portfolioLastUpdate = null,
 		?DateTimeInterface $ifModifiedSince = null,
+		?string $ifNoneMatch = null,
 	): ResponseInterface
 	{
 		return $this->httpClient->request('POST', $this->buildUrl(self::PortfolioLink, [
 			'year' => $year,
 		]), [
 			'json' => $transactions,
-			'headers' => $this->createHeaders($portfolioLastUpdate, $ifModifiedSince),
+			'headers' => $this->createHeaders($portfolioLastUpdate, $ifModifiedSince, $ifNoneMatch),
 		]);
 	}
 
@@ -61,7 +62,11 @@ final class DividendService
 	/**
 	 * @return array<string, string>
 	 */
-	private function createHeaders(?DateTimeInterface $lastUpdate, ?DateTimeInterface $ifModifiedSince): array
+	private function createHeaders(
+		?DateTimeInterface $lastUpdate,
+		?DateTimeInterface $ifModifiedSince,
+		?string $ifNoneMatch,
+	): array
 	{
 		$headers = [];
 
@@ -71,6 +76,10 @@ final class DividendService
 
 		if ($ifModifiedSince) {
 			$headers['If-Modified-Since'] = $ifModifiedSince->format('D, d M Y H:i:s \G\M\T');
+		}
+
+		if ($eTag) {
+			$headers['If-None-Match'] = $eTag;
 		}
 
 		return $headers;
