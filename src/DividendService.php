@@ -33,19 +33,14 @@ final class DividendService
 		array $transactions,
 		int $year,
 		?DateTimeInterface $portfolioLastUpdate = null,
+		?DateTimeInterface $ifModifiedSince = null,
 	): ResponseInterface
 	{
-		$headers = [];
-
-		if ($portfolioLastUpdate) {
-			$headers['X-Last-Update'] = $portfolioLastUpdate->format('D, d M Y H:i:s \G\M\T');
-		}
-
 		return $this->httpClient->request('POST', $this->buildUrl(self::PortfolioLink, [
 			'year' => $year,
 		]), [
 			'json' => $transactions,
-			'headers' => $headers,
+			'headers' => $this->createHeaders($portfolioLastUpdate, $ifModifiedSince),
 		]);
 	}
 
@@ -61,6 +56,24 @@ final class DividendService
 		}
 
 		return $url;
+	}
+
+	/**
+	 * @return array<string, string>
+	 */
+	private function createHeaders(?DateTimeInterface $lastUpdate, ?DateTimeInterface $ifModifiedSince): array
+	{
+		$headers = [];
+
+		if ($lastUpdate) {
+			$headers['X-Last-Update'] = $lastUpdate->format('D, d M Y H:i:s \G\M\T');
+		}
+
+		if ($ifModifiedSince) {
+			$headers['If-Modified-Since'] = $ifModifiedSince->format('D, d M Y H:i:s \G\M\T');
+		}
+
+		return $headers;
 	}
 
 }
