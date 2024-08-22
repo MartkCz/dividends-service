@@ -35,10 +35,12 @@ final class DividendService
 		?DateTimeInterface $portfolioLastUpdate = null,
 		?DateTimeInterface $ifModifiedSince = null,
 		?string $ifNoneMatch = null,
+		bool $sensitive = true,
 	): ResponseInterface
 	{
 		return $this->httpClient->request('POST', $this->buildUrl(self::PortfolioLink, [
 			'year' => $year,
+			'sensitive' => $sensitive ? null : 'false',
 		]), [
 			'json' => $transactions,
 			'headers' => $this->createHeaders($portfolioLastUpdate, $ifModifiedSince, $ifNoneMatch),
