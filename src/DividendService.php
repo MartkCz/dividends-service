@@ -18,11 +18,12 @@ final class DividendService extends Service
 	/**
 	 * @param Transaction[] $transactions
 	 */
-	public function portfolio(array $transactions, int $year, bool $sensitive): ServiceRequest
+	public function portfolio(array $transactions, int $year, bool $sensitive, ?string $currency = null): ServiceRequest
 	{
 		return $this->requestJson(RequestType::Post, $transactions, self::PortfolioLink, [
 			'year' => $year,
 			'sensitive' => $sensitive ? null : 'false',
+			'currency' => $currency,
 		]);
 	}
 
